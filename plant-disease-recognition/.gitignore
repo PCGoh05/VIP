@@ -1,6 +1,7 @@
 __pycache__/
 *.pyc
 .venv/
+.venv-wsl/
 venv/
 
 # Dataset and generated outputs are large.

@@ -287,3 +287,22 @@ This prototype is for educational and preliminary screening purposes only and do
 - EfficientNetB0 is optional and can be added later only after the first two models work.
 - Since the dataset is already augmented, the training scripts use only light online augmentation.
 - Validation and test sets are not manually augmented.
+
+## Current Final Results
+
+The completed run used 8 selected classes with 14,808 training images, 1,851 validation images and 1,851 final test images.
+
+| Model | Test Accuracy | Macro Precision | Macro Recall | Macro F1 | Weighted F1 | Model Size | Avg Inference Time |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| Simple CNN | 91.84% | 92.62% | 91.54% | 91.66% | 91.75% | 1.33 MB | 0.0012 s/image |
+| MobileNetV2 | 95.30% | 95.26% | 95.27% | 95.22% | 95.26% | 9.31 MB | 0.0022 s/image |
+
+MobileNetV2 achieved the stronger final test performance and is used as the main model for the Streamlit demo and Grad-CAM analysis.
+
+Generated results are saved in:
+
+```text
+outputs/reports/
+outputs/figures/
+outputs/models/
+```

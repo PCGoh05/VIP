@@ -34,10 +34,23 @@ def find_feature_layer(model):
 
 def make_gradcam_heatmap(model, image_batch, class_index=None):
     feature_layer = find_feature_layer(model)
-    grad_model = tf.keras.Model(model.inputs, [feature_layer.output, model.output])
+    feature_layer_index = model.layers.index(feature_layer)
+    layers_before_feature = model.layers[1:feature_layer_index]
+    layers_after_feature = model.layers[feature_layer_index + 1:]
 
     with tf.GradientTape() as tape:
-        feature_maps, predictions = grad_model(image_batch)
+        x = image_batch
+        for layer in layers_before_feature:
+            x = layer(x, training=False)
+
+        feature_maps = feature_layer(x, training=False)
+        tape.watch(feature_maps)
+
+        x = feature_maps
+        for layer in layers_after_feature:
+            x = layer(x, training=False)
+        predictions = x
+
         if class_index is None:
             class_index = tf.argmax(predictions[0])
         class_score = predictions[:, class_index]
