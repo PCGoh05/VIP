@@ -1,0 +1,24 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Dataset and generated outputs are large.
+data/raw/*
+data/selected/*
+data/processed/*
+outputs/models/*
+outputs/figures/*
+outputs/reports/*
+
+!data/raw/.gitkeep
+!data/selected/.gitkeep
+!data/processed/.gitkeep
+!outputs/models/.gitkeep
+!outputs/figures/.gitkeep
+!outputs/reports/.gitkeep
+
+# Local editor and OS files.
+.DS_Store
+Thumbs.db
+.vscode/
