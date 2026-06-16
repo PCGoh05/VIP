@@ -17,27 +17,32 @@ This is a simple student-level project for recognizing selected plant leaf disea
 ## Project Structure
 
 ```text
-plant-disease-recognition/
-├── data/
-│   ├── raw/
-│   ├── selected/
-│   └── processed/
-├── notebooks/
-├── src/
-├── app/
-├── outputs/
-│   ├── figures/
-│   ├── models/
-│   └── reports/
-├── requirements.txt
-└── README.md
+VIP/
+|-- data/
+|   |-- raw/
+|   |-- selected/
+|   `-- processed/
+|-- notebooks/
+|-- src/
+|-- app/
+|-- outputs/
+|   |-- figures/
+|   |-- models/
+|   `-- reports/
+|-- DATASET.md
+|-- requirements.txt
+`-- README.md
 ```
 
 ## Dataset
 
 Use the Kaggle New Plant Diseases Dataset (Augmented).
 
-Place the extracted dataset inside:
+The image dataset is not stored in GitHub because it is large. GitHub stores the code, setup instructions and lightweight result summaries only. Each team member should download the dataset zip from the shared team drive or Kaggle, then run the extraction script locally.
+
+See `DATASET.md` for the recommended team workflow.
+
+The scripts place extracted images inside:
 
 ```text
 data/raw/
@@ -110,11 +115,15 @@ If a GPU device is listed, use the same training commands below inside WSL2.
 
 ## Step-by-Step Workflow
 
-Run all commands from the `plant-disease-recognition` folder.
+Run all commands from the project root folder:
+
+```text
+C:\Users\Acer\Documents\VIP
+```
 
 ### 1. Extract selected classes from the dataset zip
 
-Place `VIP_Dataset.zip` at:
+Option A: place `VIP_Dataset.zip` at the default local path:
 
 ```text
 C:\Users\Acer\Downloads\VIP_Dataset.zip
@@ -123,6 +132,19 @@ C:\Users\Acer\Downloads\VIP_Dataset.zip
 Then run:
 
 ```powershell
+python src/extract_selected_from_zip.py
+```
+
+Option B: give your own zip path:
+
+```powershell
+python src/extract_selected_from_zip.py --zip-path "D:\Datasets\VIP_Dataset.zip"
+```
+
+Option C: set an environment variable first:
+
+```powershell
+$env:VIP_DATASET_ZIP="D:\Datasets\VIP_Dataset.zip"
 python src/extract_selected_from_zip.py
 ```
 
@@ -267,7 +289,7 @@ Each heatmap should be checked manually to explain whether the model focuses on 
 ### 9. Run the Streamlit application
 
 ```powershell
-streamlit run app/streamlit_app.py
+streamlit run app/streamlit-app.py
 ```
 
 The app allows users to:

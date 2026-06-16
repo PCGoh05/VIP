@@ -1,3 +1,5 @@
+import argparse
+import os
 import shutil
 import zipfile
 from pathlib import Path, PurePosixPath
@@ -6,7 +8,7 @@ from config import RAW_DIR, SELECTED_CLASSES
 from utils import make_dir
 
 
-ZIP_PATH = Path(r"C:\Users\Acer\Downloads\VIP_Dataset.zip")
+DEFAULT_ZIP_PATH = Path(r"C:\Users\Acer\Downloads\VIP_Dataset.zip")
 
 
 def get_entry_parts(entry_name):
@@ -35,9 +37,20 @@ def reset_selected_raw_folders():
                 shutil.rmtree(target_dir)
 
 
-def extract_selected_classes():
-    if not ZIP_PATH.exists():
-        raise FileNotFoundError(f"Dataset zip not found: {ZIP_PATH}")
+def get_zip_path(command_line_path=None):
+    if command_line_path:
+        return Path(command_line_path)
+
+    environment_path = os.environ.get("VIP_DATASET_ZIP")
+    if environment_path:
+        return Path(environment_path)
+
+    return DEFAULT_ZIP_PATH
+
+
+def extract_selected_classes(zip_path):
+    if not zip_path.exists():
+        raise FileNotFoundError(f"Dataset zip not found: {zip_path}")
 
     selected = set(SELECTED_CLASSES)
     counts = {
@@ -50,7 +63,7 @@ def extract_selected_classes():
     make_dir(RAW_DIR)
     reset_selected_raw_folders()
 
-    with zipfile.ZipFile(ZIP_PATH) as archive:
+    with zipfile.ZipFile(zip_path) as archive:
         for entry in archive.infolist():
             if entry.is_dir():
                 continue
@@ -80,8 +93,22 @@ def extract_selected_classes():
     return counts, duplicate_entries
 
 
+def parse_args():
+    parser = argparse.ArgumentParser(description="Extract selected plant disease classes from the Kaggle dataset zip.")
+    parser.add_argument(
+        "--zip-path",
+        default=None,
+        help="Path to VIP_Dataset.zip. If omitted, the script checks VIP_DATASET_ZIP, then the default local path.",
+    )
+    return parser.parse_args()
+
+
 def main():
-    counts, duplicate_entries = extract_selected_classes()
+    args = parse_args()
+    zip_path = get_zip_path(args.zip_path)
+    print(f"Using dataset zip: {zip_path}")
+
+    counts, duplicate_entries = extract_selected_classes(zip_path)
 
     print("Selected dataset extraction complete.\n")
     for split_name in ["train", "valid"]:
