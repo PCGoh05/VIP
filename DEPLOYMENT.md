@@ -15,17 +15,26 @@ The deployed app needs:
 
 The deployed app does not need the full dataset.
 
+The repository includes a very small set of packaged demo images in:
+
+```text
+app/sample_images/
+```
+
+These images let users test the deployed webpage immediately without downloading the dataset.
+
 ## What the deployed app can do
 
 The deployed app can:
 
 - accept one uploaded leaf image
+- test packaged sample images directly from the sidebar
 - predict the plant disease class
 - show confidence and top three predictions
 - show inference time
 - show Grad-CAM overlay
 
-The deployed app may not show local final test sample choices unless the dataset is also available in the deployment environment. For public demo use, uploading one image is enough.
+The deployed app is for inference only. It is not intended to train the model or run the full dataset pipeline online.
 
 ## Recommended deployment option
 
@@ -73,3 +82,9 @@ Recommended sharing methods:
 - Kaggle dataset page plus project extraction script
 
 Do not store the selected dataset directly in normal Git commits.
+
+## Running the full dataset pipeline
+
+To train models or run full evaluation, team members should use a local computer, WSL2 GPU environment, Google Colab or Kaggle Notebook. They need to download the dataset zip or the shared `data/processed/` zip first.
+
+The deployed Streamlit webpage is only for testing predictions and Grad-CAM from uploaded images or packaged samples.

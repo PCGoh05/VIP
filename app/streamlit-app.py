@@ -11,6 +11,7 @@ from PIL import Image
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 SRC_DIR = PROJECT_ROOT / "src"
+PACKAGED_SAMPLE_DIR = PROJECT_ROOT / "app" / "sample_images"
 sys.path.append(str(SRC_DIR))
 
 from config import IMAGE_SIZE, MODELS_DIR, PROCESSED_DIR, REPORTS_DIR  # noqa: E402
@@ -109,25 +110,31 @@ def get_default_model_index(available_models):
 
 @st.cache_data
 def load_sample_images():
-    test_dir = PROCESSED_DIR / "test"
-    if not test_dir.exists():
-        return []
+    sample_roots = [
+        ("Packaged demo sample", PACKAGED_SAMPLE_DIR),
+        ("Final test sample", PROCESSED_DIR / "test"),
+    ]
 
     samples = []
-    for class_dir in sorted([path for path in test_dir.iterdir() if path.is_dir()]):
-        image_paths = sorted(
-            [
-                path
-                for path in class_dir.iterdir()
-                if path.suffix.lower() in [".jpg", ".jpeg", ".png"]
-            ]
-        )
-        for image_path in image_paths[:3]:
-            samples.append({
-                "label": f"{make_class_label(class_dir.name)} / {image_path.name}",
-                "path": str(image_path),
-                "true_class": class_dir.name,
-            })
+    for source_name, sample_root in sample_roots:
+        if not sample_root.exists():
+            continue
+
+        for class_dir in sorted([path for path in sample_root.iterdir() if path.is_dir()]):
+            image_paths = sorted(
+                [
+                    path
+                    for path in class_dir.iterdir()
+                    if path.suffix.lower() in [".jpg", ".jpeg", ".png"]
+                ]
+            )
+            limit = 1 if sample_root == PACKAGED_SAMPLE_DIR else 3
+            for image_path in image_paths[:limit]:
+                samples.append({
+                    "label": f"{source_name}: {make_class_label(class_dir.name)}",
+                    "path": str(image_path),
+                    "true_class": class_dir.name,
+                })
     return samples
 
 
@@ -268,7 +275,7 @@ def main():
             st.caption(f"Macro F1-score: {selected_model['macro_f1']:.2%}")
 
         st.divider()
-        st.subheader("Final test sample")
+        st.subheader("Sample image")
         sample_labels = ["No sample selected"] + [item["label"] for item in sample_images]
         sample_label = st.selectbox("Optional sample image", sample_labels)
         selected_sample = None

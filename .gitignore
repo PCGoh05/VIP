@@ -11,6 +11,7 @@ plant-disease-recognition/
 data/raw/*
 data/selected/*
 data/processed/*
+data/*.zip
 outputs/models/*
 outputs/figures/*
 outputs/reports/*
