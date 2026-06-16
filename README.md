@@ -30,7 +30,9 @@ VIP/
 |   |-- models/
 |   `-- reports/
 |-- DATASET.md
+|-- DEPLOYMENT.md
 |-- requirements.txt
+|-- runtime.txt
 `-- README.md
 ```
 
@@ -41,6 +43,8 @@ Use the Kaggle New Plant Diseases Dataset (Augmented).
 The image dataset is not stored in GitHub because it is large. GitHub stores the code, setup instructions and lightweight result summaries only. Each team member should download the dataset zip from the shared team drive or Kaggle, then run the extraction script locally.
 
 See `DATASET.md` for the recommended team workflow.
+
+For online demo deployment, the full dataset is not required. The Streamlit app only needs the trained model and class names. See `DEPLOYMENT.md`.
 
 The scripts place extracted images inside:
 
@@ -112,6 +116,12 @@ python -c "import tensorflow as tf; print(tf.config.list_physical_devices('GPU')
 ```
 
 If a GPU device is listed, use the same training commands below inside WSL2.
+
+For WSL2 GPU training, install the CUDA-enabled TensorFlow package inside WSL if needed:
+
+```bash
+pip install "tensorflow[and-cuda]>=2.16"
+```
 
 ## Step-by-Step Workflow
 

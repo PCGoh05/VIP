@@ -106,10 +106,37 @@ They should not expect to see the actual dataset images on GitHub.
 
 ## Optional: sharing trained models
 
-If the team wants to avoid retraining, upload the trained `.keras` model files to Google Drive or OneDrive and share the link in the group chat. Then each team member can place the downloaded model files in:
+If the team wants to share only the selected dataset, package only:
+
+```text
+data/processed/
+```
+
+Do not package all three local folders (`data/raw`, `data/selected` and `data/processed`) because they contain duplicate copies of the selected images.
+
+Current local sizes on this computer are approximately:
+
+```text
+data/raw/       270 MB
+data/selected/  270 MB
+data/processed/ 270 MB
+```
+
+Sharing all three would waste space. Sharing `data/processed/` is enough for teammates who want to train, evaluate or demo using the final split.
+
+## Optional: sharing trained models
+
+The final fine-tuned model is small enough for this coursework repository and is included for deployment:
+
+```text
+outputs/models/mobilenetv2_finetuned.keras
+outputs/models/class_names.json
+```
+
+If the team trains a larger model later, upload the `.keras` model file to Google Drive or OneDrive and share the link in the group chat. Then each team member can place the downloaded model files in:
 
 ```text
 outputs/models/
 ```
 
-Do not commit model files to GitHub.
+Do not commit very large model files to GitHub.

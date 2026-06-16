@@ -14,14 +14,18 @@ data/processed/*
 outputs/models/*
 outputs/figures/*
 outputs/reports/*
+dataset_release/
 
 !data/raw/.gitkeep
 !data/selected/.gitkeep
 !data/processed/.gitkeep
 !outputs/models/.gitkeep
+!outputs/models/class_names.json
+!outputs/models/mobilenetv2_finetuned.keras
 !outputs/figures/.gitkeep
 !outputs/reports/.gitkeep
 !outputs/reports/final_results_summary.md
+!outputs/reports/model_comparison.csv
 
 # Local editor and OS files.
 .DS_Store
