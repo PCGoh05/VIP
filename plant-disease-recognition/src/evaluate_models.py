@@ -114,6 +114,7 @@ def main():
     models_to_evaluate = {
         "simple_cnn": MODELS_DIR / "simple_cnn.keras",
         "mobilenetv2": MODELS_DIR / "mobilenetv2.keras",
+        "mobilenetv2_finetuned": MODELS_DIR / "mobilenetv2_finetuned.keras",
     }
 
     rows = []

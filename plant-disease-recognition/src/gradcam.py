@@ -19,6 +19,17 @@ def load_class_names():
     return sorted([p.name for p in (PROCESSED_DIR / "train").iterdir() if p.is_dir()])
 
 
+def select_gradcam_model():
+    candidates = [
+        MODELS_DIR / "mobilenetv2_finetuned.keras",
+        MODELS_DIR / "mobilenetv2.keras",
+    ]
+    for model_path in candidates:
+        if model_path.exists():
+            return model_path
+    raise FileNotFoundError("No MobileNetV2 model found for Grad-CAM.")
+
+
 def read_image_array(path):
     img = Image.open(path).convert("RGB").resize(IMAGE_SIZE)
     return np.asarray(img).astype("float32")
@@ -108,10 +119,8 @@ def main():
     output_dir = FIGURES_DIR / "gradcam_examples"
     make_dir(output_dir)
 
-    model_path = MODELS_DIR / "mobilenetv2.keras"
-    if not model_path.exists():
-        raise FileNotFoundError(f"MobileNetV2 model not found: {model_path}")
-
+    model_path = select_gradcam_model()
+    print(f"Using model for Grad-CAM: {model_path}")
     model = tf.keras.models.load_model(str(model_path))
     class_names = load_class_names()
 

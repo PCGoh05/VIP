@@ -220,6 +220,12 @@ For a short smoke test that does not produce the final model:
 python src/train_mobilenetv2.py --quick-test
 ```
 
+Optional fine-tuning after the first MobileNetV2 model is working:
+
+```powershell
+python src/fine_tune_mobilenetv2.py
+```
+
 ### 7. Evaluate both models
 
 ```powershell
@@ -267,6 +273,8 @@ streamlit run app/streamlit_app.py
 The app allows users to:
 
 - upload one leaf image
+- choose the available MobileNetV2 model, with the best evaluated model selected by default
+- optionally select a final test sample for demonstration and ground-truth checking
 - view the uploaded image
 - see the predicted class
 - see the confidence score
@@ -296,8 +304,9 @@ The completed run used 8 selected classes with 14,808 training images, 1,851 val
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
 | Simple CNN | 91.84% | 92.62% | 91.54% | 91.66% | 91.75% | 1.33 MB | 0.0012 s/image |
 | MobileNetV2 | 95.30% | 95.26% | 95.27% | 95.22% | 95.26% | 9.31 MB | 0.0022 s/image |
+| MobileNetV2 fine-tuned | 96.49% | 96.62% | 96.48% | 96.44% | 96.47% | 20.84 MB | 0.0021 s/image |
 
-MobileNetV2 achieved the stronger final test performance and is used as the main model for the Streamlit demo and Grad-CAM analysis.
+The fine-tuned MobileNetV2 achieved the strongest final test performance and is used as the main model for the Streamlit demo and Grad-CAM analysis.
 
 Generated results are saved in:
 

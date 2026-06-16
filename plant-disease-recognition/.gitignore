@@ -18,6 +18,7 @@ outputs/reports/*
 !outputs/models/.gitkeep
 !outputs/figures/.gitkeep
 !outputs/reports/.gitkeep
+!outputs/reports/final_results_summary.md
 
 # Local editor and OS files.
 .DS_Store
