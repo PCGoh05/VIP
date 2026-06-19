@@ -22,6 +22,8 @@ dataset_release/
 !data/processed/.gitkeep
 !outputs/models/.gitkeep
 !outputs/models/class_names.json
+!outputs/models/simple_cnn.keras
+!outputs/models/mobilenetv2.keras
 !outputs/models/mobilenetv2_finetuned.keras
 !outputs/figures/.gitkeep
 !outputs/reports/.gitkeep

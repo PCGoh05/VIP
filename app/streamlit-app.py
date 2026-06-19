@@ -61,8 +61,9 @@ def split_crop_and_condition(class_name):
 
 def get_available_models():
     candidates = {
-        "MobileNetV2 fine-tuned": MODELS_DIR / "mobilenetv2_finetuned.keras",
+        "Simple CNN": MODELS_DIR / "simple_cnn.keras",
         "MobileNetV2": MODELS_DIR / "mobilenetv2.keras",
+        "MobileNetV2 fine-tuned": MODELS_DIR / "mobilenetv2_finetuned.keras",
     }
     comparison = load_model_comparison()
 
@@ -249,7 +250,7 @@ def main():
 
     available_models = get_available_models()
     if not available_models:
-        st.warning("No trained MobileNetV2 model found. Run src/train_mobilenetv2.py first.")
+        st.warning("No trained model found. Run the training scripts first.")
         st.stop()
 
     model_names = [item["display_name"] for item in available_models]
@@ -301,10 +302,10 @@ def main():
     elif selected_sample is not None:
         image_source = selected_sample["path"]
         true_class = selected_sample["true_class"]
-        source_title = "Selected final test sample"
+        source_title = "Selected sample image"
 
     if image_source is None:
-        st.info("Upload a leaf image or choose a final test sample from the sidebar.")
+        st.info("Upload a leaf image or choose a demo sample from the sidebar.")
         if not comparison.empty:
             st.subheader("Model comparison")
             display = comparison.copy()

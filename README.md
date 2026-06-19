@@ -305,7 +305,7 @@ streamlit run app/streamlit-app.py
 The app allows users to:
 
 - upload one leaf image
-- choose the available MobileNetV2 model, with the best evaluated model selected by default
+- choose Simple CNN, MobileNetV2 or fine-tuned MobileNetV2, with the best evaluated model selected by default
 - optionally select a final test sample for demonstration and ground-truth checking
 - view the uploaded image
 - see the predicted class
@@ -338,7 +338,7 @@ The completed run used 8 selected classes with 14,808 training images, 1,851 val
 | MobileNetV2 | 95.30% | 95.26% | 95.27% | 95.22% | 95.26% | 9.31 MB | 0.0022 s/image |
 | MobileNetV2 fine-tuned | 96.49% | 96.62% | 96.48% | 96.44% | 96.47% | 20.84 MB | 0.0021 s/image |
 
-The fine-tuned MobileNetV2 achieved the strongest final test performance and is used as the main model for the Streamlit demo and Grad-CAM analysis.
+The fine-tuned MobileNetV2 achieved the strongest final test performance and is selected by default in the Streamlit demo. The app also includes Simple CNN and MobileNetV2 so users can compare model predictions.
 
 Generated results are saved in:
 

@@ -36,30 +36,41 @@ def read_image_array(path):
 
 
 def find_feature_layer(model):
-    """For this project, MobileNetV2's final feature map is the nested model output."""
+    """Find the final feature map layer used for Grad-CAM."""
     for layer in reversed(model.layers):
         if isinstance(layer, tf.keras.Model) and len(layer.output.shape) == 4:
             return layer
+        if isinstance(layer, tf.keras.layers.Conv2D):
+            return layer
     raise ValueError("Could not find a 4D feature layer for Grad-CAM.")
+
+
+def call_layer_for_gradcam(layer, x):
+    try:
+        return layer(x, training=False)
+    except TypeError:
+        return layer(x)
 
 
 def make_gradcam_heatmap(model, image_batch, class_index=None):
     feature_layer = find_feature_layer(model)
     feature_layer_index = model.layers.index(feature_layer)
-    layers_before_feature = model.layers[1:feature_layer_index]
+    layers_before_feature = model.layers[:feature_layer_index]
     layers_after_feature = model.layers[feature_layer_index + 1:]
 
     with tf.GradientTape() as tape:
         x = image_batch
         for layer in layers_before_feature:
-            x = layer(x, training=False)
+            if isinstance(layer, tf.keras.layers.InputLayer):
+                continue
+            x = call_layer_for_gradcam(layer, x)
 
-        feature_maps = feature_layer(x, training=False)
+        feature_maps = call_layer_for_gradcam(feature_layer, x)
         tape.watch(feature_maps)
 
         x = feature_maps
         for layer in layers_after_feature:
-            x = layer(x, training=False)
+            x = call_layer_for_gradcam(layer, x)
         predictions = x
 
         if class_index is None:

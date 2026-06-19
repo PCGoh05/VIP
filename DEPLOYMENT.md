@@ -9,6 +9,8 @@ The deployed app needs:
 - source code in `app/` and `src/`
 - `requirements.txt`
 - `runtime.txt`
+- `outputs/models/simple_cnn.keras`
+- `outputs/models/mobilenetv2.keras`
 - `outputs/models/mobilenetv2_finetuned.keras`
 - `outputs/models/class_names.json`
 - `outputs/reports/model_comparison.csv`
@@ -29,6 +31,7 @@ The deployed app can:
 
 - accept one uploaded leaf image
 - test packaged sample images directly from the sidebar
+- switch between Simple CNN, MobileNetV2 and fine-tuned MobileNetV2
 - predict the plant disease class
 - show confidence and top three predictions
 - show inference time
