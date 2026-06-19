@@ -81,7 +81,7 @@ Tomato___Late_blight
 If your downloaded dataset uses slightly different class names, edit `SELECTED_CLASSES` in `src/config.py`.
 
 ## Installation
-
+https://vip-plant-disease-recognition.streamlit.app/
 Create a virtual environment:
 
 ```powershell
