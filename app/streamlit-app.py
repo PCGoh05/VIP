@@ -1,4 +1,5 @@
 import json
+import html
 import sys
 import time
 from pathlib import Path
@@ -158,16 +159,37 @@ def confidence_message(confidence):
 def render_prediction_panel(predicted_class, confidence, inference_time):
     crop, condition = split_crop_and_condition(predicted_class)
     message, level = confidence_message(confidence)
+    predicted_label = make_class_label(predicted_class)
 
     st.markdown('<div class="panel">', unsafe_allow_html=True)
     st.subheader("Prediction result")
-    st.metric("Predicted class", make_class_label(predicted_class))
-
-    col_a, col_b, col_c = st.columns(3)
-    col_a.metric("Crop", crop)
-    col_b.metric("Condition", condition)
-    col_c.metric("Confidence", f"{confidence:.2%}")
-    st.metric("Inference time", f"{inference_time:.4f} seconds")
+    st.markdown(
+        f"""
+        <div class="prediction-block">
+            <div class="prediction-label">Predicted class</div>
+            <div class="prediction-class">{html.escape(predicted_label)}</div>
+        </div>
+        <div class="prediction-grid">
+            <div class="prediction-item">
+                <div class="prediction-label">Crop</div>
+                <div class="prediction-value">{html.escape(crop)}</div>
+            </div>
+            <div class="prediction-item">
+                <div class="prediction-label">Condition</div>
+                <div class="prediction-value">{html.escape(condition)}</div>
+            </div>
+            <div class="prediction-item">
+                <div class="prediction-label">Confidence</div>
+                <div class="prediction-value">{confidence:.2%}</div>
+            </div>
+            <div class="prediction-item">
+                <div class="prediction-label">Inference time</div>
+                <div class="prediction-value">{inference_time:.4f} seconds</div>
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
     if level == "normal":
         st.success(message)
@@ -231,6 +253,37 @@ def main():
             border-radius: 8px;
             padding: 1rem;
             background: #ffffff;
+        }
+        .prediction-block { margin-bottom: 0.75rem; }
+        .prediction-class {
+            font-size: 1.65rem;
+            font-weight: 700;
+            line-height: 1.2;
+            overflow-wrap: anywhere;
+        }
+        .prediction-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 0.75rem;
+            margin: 0.75rem 0 1rem 0;
+        }
+        .prediction-item {
+            border: 1px solid #e5ece5;
+            border-radius: 8px;
+            padding: 0.75rem;
+            background: #f9fbf9;
+        }
+        .prediction-label {
+            color: #5f6f5f;
+            font-size: 0.86rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+        .prediction-value {
+            font-size: 1.08rem;
+            font-weight: 650;
+            line-height: 1.25;
+            overflow-wrap: anywhere;
         }
         .small-note { color: #5f6f5f; font-size: 0.92rem; }
         </style>
