@@ -26,9 +26,25 @@ dataset_release/
 !outputs/models/mobilenetv2.keras
 !outputs/models/mobilenetv2_finetuned.keras
 !outputs/figures/.gitkeep
+!outputs/figures/raw_class_distribution.png
+!outputs/figures/simple_cnn_training_curves.png
+!outputs/figures/mobilenetv2_training_curves.png
+!outputs/figures/mobilenetv2_finetuned_training_curves.png
+!outputs/figures/simple_cnn_confusion_matrix.png
+!outputs/figures/mobilenetv2_confusion_matrix.png
+!outputs/figures/mobilenetv2_finetuned_confusion_matrix.png
+!outputs/figures/gradcam_examples/
+!outputs/figures/gradcam_examples/*.png
 !outputs/reports/.gitkeep
 !outputs/reports/final_results_summary.md
 !outputs/reports/model_comparison.csv
+!outputs/reports/raw_class_distribution.csv
+!outputs/reports/selected_class_counts.csv
+!outputs/reports/processed_split_summary.csv
+!outputs/reports/simple_cnn_classification_report.txt
+!outputs/reports/mobilenetv2_classification_report.txt
+!outputs/reports/mobilenetv2_finetuned_classification_report.txt
+!outputs/reports/gradcam_examples_summary.csv
 
 # Local editor and OS files.
 .DS_Store
