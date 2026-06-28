@@ -36,6 +36,20 @@ VIP/
 `-- README.md
 ```
 
+## Main Review Notebook
+
+For lecturer review and team discussion, open this notebook first:
+
+```text
+notebooks/CDS6334_Plant_Disease_Recognition_Project.ipynb
+```
+
+The notebook contains the complete project workflow: dataset audit, selected class preparation, train/validation/test split, Simple CNN training, MobileNetV2 training, fine-tuning, evaluation, confusion matrices, Grad-CAM examples and Streamlit app explanation.
+
+By default, the notebook shows the saved results in `outputs/` without retraining. To regenerate outputs, change the `RUN_*` switches at the top of the notebook to `True`.
+
+The `src/` scripts are kept as backup and support files for reproducibility and the Streamlit app.
+
 ## Dataset
 
 Use the Kaggle New Plant Diseases Dataset (Augmented).
