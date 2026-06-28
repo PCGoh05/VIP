@@ -50,3 +50,6 @@ dataset_release/
 .DS_Store
 Thumbs.db
 .vscode/
+
+# Local report drafts and Word submissions are kept out of GitHub.
+report/
