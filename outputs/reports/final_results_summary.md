@@ -12,9 +12,9 @@
 
 | Model | Accuracy | Macro Precision | Macro Recall | Macro F1 | Weighted F1 | Model Size | Avg Inference Time |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| Simple CNN | 91.84% | 92.62% | 91.54% | 91.66% | 91.75% | 1.33 MB | 0.0012 s/image |
-| MobileNetV2 | 95.30% | 95.26% | 95.27% | 95.22% | 95.26% | 9.31 MB | 0.0022 s/image |
-| MobileNetV2 fine-tuned | 96.49% | 96.62% | 96.48% | 96.44% | 96.47% | 20.84 MB | 0.0021 s/image |
+| Simple CNN | 91.84% | 92.62% | 91.54% | 91.66% | 91.75% | 1.33 MB | 0.0049 s/image |
+| MobileNetV2 | 95.25% | 95.21% | 95.22% | 95.17% | 95.21% | 9.31 MB | 0.0222 s/image |
+| MobileNetV2 fine-tuned | 96.43% | 96.56% | 96.43% | 96.38% | 96.42% | 20.84 MB | 0.0222 s/image |
 
 ## Main Finding
 
