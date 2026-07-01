@@ -110,7 +110,6 @@ def get_default_model_index(available_models):
     return 0
 
 
-@st.cache_data
 def load_sample_images():
     sample_roots = [
         ("Packaged demo sample", PACKAGED_SAMPLE_DIR),
@@ -141,6 +140,10 @@ def load_sample_images():
 
 
 def prepare_image(image_source):
+    if isinstance(image_source, (str, Path)) and not Path(image_source).exists():
+        st.error("The selected sample image is no longer available. Please choose another sample image.")
+        st.stop()
+
     image = Image.open(image_source).convert("RGB")
     resized = image.resize(IMAGE_SIZE)
     image_array = np.asarray(resized).astype("float32")
