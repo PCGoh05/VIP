@@ -21,6 +21,7 @@ SEED = 42
 # that the full pipeline works on your computer.
 SIMPLE_CNN_EPOCHS = 12
 MOBILENET_EPOCHS = 12
+EFFICIENTNET_EPOCHS = 12
 VALID_TEST_SIZE = 0.5
 
 # Eight selected classes from tomato, potato and corn.

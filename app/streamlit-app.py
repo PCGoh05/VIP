@@ -65,6 +65,7 @@ def get_available_models():
         "Simple CNN": MODELS_DIR / "simple_cnn.keras",
         "MobileNetV2": MODELS_DIR / "mobilenetv2.keras",
         "MobileNetV2 fine-tuned": MODELS_DIR / "mobilenetv2_finetuned.keras",
+        "EfficientNetB0": MODELS_DIR / "efficientnetb0.keras",
     }
     comparison = load_model_comparison()
 

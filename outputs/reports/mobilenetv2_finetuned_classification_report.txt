@@ -2,7 +2,7 @@
 
 Corn_(maize)___Cercospora_leaf_spot Gray_leaf_spot       0.95      0.93      0.94       205
                        Corn_(maize)___Common_rust_       1.00      1.00      1.00       239
-               Corn_(maize)___Northern_Leaf_Blight       0.94      0.95      0.95       239
+               Corn_(maize)___Northern_Leaf_Blight       0.94      0.96      0.95       239
                              Potato___Early_blight       1.00      1.00      1.00       242
                               Potato___Late_blight       0.99      0.99      0.99       242
                            Tomato___Bacterial_spot       0.97      1.00      0.99       213

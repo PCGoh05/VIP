@@ -115,6 +115,7 @@ def main():
         "simple_cnn": MODELS_DIR / "simple_cnn.keras",
         "mobilenetv2": MODELS_DIR / "mobilenetv2.keras",
         "mobilenetv2_finetuned": MODELS_DIR / "mobilenetv2_finetuned.keras",
+        "efficientnetb0": MODELS_DIR / "efficientnetb0.keras",
     }
 
     rows = []

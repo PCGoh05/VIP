@@ -1,0 +1,14 @@
+                                                    precision    recall  f1-score   support
+
+Corn_(maize)___Cercospora_leaf_spot Gray_leaf_spot       0.98      0.91      0.94       205
+                       Corn_(maize)___Common_rust_       1.00      1.00      1.00       239
+               Corn_(maize)___Northern_Leaf_Blight       0.92      0.98      0.95       239
+                             Potato___Early_blight       1.00      1.00      1.00       242
+                              Potato___Late_blight       0.97      1.00      0.98       242
+                           Tomato___Bacterial_spot       0.98      0.99      0.98       213
+                             Tomato___Early_blight       0.96      0.91      0.94       240
+                              Tomato___Late_blight       0.94      0.95      0.94       231
+
+                                          accuracy                           0.97      1851
+                                         macro avg       0.97      0.97      0.97      1851
+                                      weighted avg       0.97      0.97      0.97      1851

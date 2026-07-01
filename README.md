@@ -44,7 +44,7 @@ For lecturer review and team discussion, open this notebook first:
 notebooks/CDS6334_Plant_Disease_Recognition_Project.ipynb
 ```
 
-The notebook contains the complete project workflow: dataset audit, selected class preparation, train/validation/test split, Simple CNN training, MobileNetV2 training, fine-tuning, evaluation, confusion matrices, Grad-CAM examples and Streamlit app explanation.
+The notebook contains the complete project workflow: dataset audit, selected class preparation, train/validation/test split, Simple CNN training, MobileNetV2 training, MobileNetV2 fine-tuning, optional EfficientNetB0 training, evaluation, confusion matrices, Grad-CAM examples and Streamlit app explanation.
 
 By default, the notebook shows the saved results in `outputs/` without retraining. To regenerate outputs, change the `RUN_*` switches at the top of the notebook to `True`.
 
@@ -134,7 +134,7 @@ If a GPU device is listed, use the same training commands below inside WSL2.
 For WSL2 GPU training, install the CUDA-enabled TensorFlow package inside WSL if needed:
 
 ```bash
-pip install "tensorflow[and-cuda]>=2.16"
+pip install "tensorflow[and-cuda]==2.17.1" numpy==1.26.4 scipy==1.13.1 pandas scikit-learn matplotlib pillow opencv-python-headless streamlit ipykernel jupyter
 ```
 
 ## Step-by-Step Workflow
@@ -272,7 +272,22 @@ Optional fine-tuning after the first MobileNetV2 model is working:
 python src/fine_tune_mobilenetv2.py
 ```
 
-### 7. Evaluate both models
+### 7. Optional EfficientNetB0 experiment
+
+EfficientNetB0 is optional. Run it only after the Simple CNN and MobileNetV2 models are already working:
+
+```powershell
+python src/train_efficientnetb0.py
+```
+
+This saves:
+
+```text
+outputs/models/efficientnetb0.keras
+outputs/figures/efficientnetb0_training_curves.png
+```
+
+### 8. Evaluate all available models
 
 ```powershell
 python src/evaluate_models.py
@@ -310,7 +325,7 @@ outputs/figures/gradcam_examples/
 
 Each heatmap should be checked manually to explain whether the model focuses on visible leaf symptom regions or irrelevant background.
 
-### 9. Run the Streamlit application
+### 10. Run the Streamlit application
 
 ```powershell
 streamlit run app/streamlit-app.py
@@ -319,7 +334,7 @@ streamlit run app/streamlit-app.py
 The app allows users to:
 
 - upload one leaf image
-- choose Simple CNN, MobileNetV2 or fine-tuned MobileNetV2, with the best evaluated model selected by default
+- choose Simple CNN, MobileNetV2, fine-tuned MobileNetV2 or EfficientNetB0 if the model file exists, with the best evaluated model selected by default
 - optionally select a final test sample for demonstration and ground-truth checking
 - view the uploaded image
 - see the predicted class
@@ -348,11 +363,12 @@ The completed run used 8 selected classes with 14,808 training images, 1,851 val
 
 | Model | Test Accuracy | Macro Precision | Macro Recall | Macro F1 | Weighted F1 | Model Size | Avg Inference Time |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| Simple CNN | 91.84% | 92.62% | 91.54% | 91.66% | 91.75% | 1.33 MB | 0.0049 s/image |
-| MobileNetV2 | 95.25% | 95.21% | 95.22% | 95.17% | 95.21% | 9.31 MB | 0.0222 s/image |
-| MobileNetV2 fine-tuned | 96.43% | 96.56% | 96.43% | 96.38% | 96.42% | 20.84 MB | 0.0222 s/image |
+| Simple CNN | 91.84% | 92.62% | 91.54% | 91.66% | 91.75% | 1.33 MB | 0.0021 s/image |
+| MobileNetV2 | 95.30% | 95.26% | 95.27% | 95.22% | 95.26% | 9.31 MB | 0.0029 s/image |
+| MobileNetV2 fine-tuned | 96.49% | 96.62% | 96.48% | 96.44% | 96.47% | 20.84 MB | 0.0024 s/image |
+| EfficientNetB0 optional | 96.81% | 96.88% | 96.72% | 96.76% | 96.80% | 16.39 MB | 0.0045 s/image |
 
-The fine-tuned MobileNetV2 achieved the strongest final test performance and is selected by default in the Streamlit demo. The app also includes Simple CNN and MobileNetV2 so users can compare model predictions.
+In this optional experiment, EfficientNetB0 achieved the strongest final test performance. MobileNetV2 fine-tuned remains the main required transfer-learning model, while EfficientNetB0 is treated as an additional comparison model.
 
 Generated results are saved in:
 
