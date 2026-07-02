@@ -1,0 +1,363 @@
+# AI-Powered Plant Disease Recognition Assistant
+
+CDS6334 Visual Information Processing Final Project  
+Track: Intelligent Visual Application Track
+
+This is a simple student-level project for recognizing selected plant leaf diseases and showing Grad-CAM heatmaps as a visual explanation.
+
+## Group Members
+
+| Name | Role |
+| --- | --- |
+| Lee Yi Yang | Dataset lead |
+| Goh Pei Chung | Baseline and evaluation lead |
+| Saw Qi Rui | Transfer-learning lead |
+| Jayy Wong Jun Vun | Explainability and application lead |
+
+## Project Structure
+
+```text
+VIP/
+|-- data/
+|   |-- raw/
+|   |-- selected/
+|   `-- processed/
+|-- notebooks/
+|-- src/
+|-- app/
+|-- outputs/
+|   |-- figures/
+|   |-- models/
+|   `-- reports/
+|-- DATASET.md
+|-- DEPLOYMENT.md
+|-- requirements.txt
+|-- runtime.txt
+`-- README.md
+```
+
+## Main Review Notebook
+
+For lecturer review and team discussion, open this notebook first:
+
+```text
+notebooks/CDS6334_Plant_Disease_Recognition_Project.ipynb
+```
+
+The notebook contains the complete project workflow: dataset audit, selected class preparation, train/validation/test split, Simple CNN training, MobileNetV2 training, fine-tuning, evaluation, confusion matrices, Grad-CAM examples and Streamlit app explanation.
+
+By default, the notebook shows the saved results in `outputs/` without retraining. To regenerate outputs, change the `RUN_*` switches at the top of the notebook to `True`.
+
+The `src/` scripts are kept as backup and support files for reproducibility and the Streamlit app.
+
+## Dataset
+
+Use the Kaggle New Plant Diseases Dataset (Augmented).
+
+The image dataset is not stored in GitHub because it is large. GitHub stores the code, setup instructions and lightweight result summaries only. Each team member should download the dataset zip from the shared team drive or Kaggle, then run the extraction script locally.
+
+See `DATASET.md` for the recommended team workflow.
+
+For online demo deployment, the full dataset is not required. The Streamlit app only needs the trained model and class names. See `DEPLOYMENT.md`.
+
+The scripts place extracted images inside:
+
+```text
+data/raw/
+```
+
+The scripts will search inside `data/raw/` for the Kaggle `train` and `valid` folders, even if the zip file creates nested folders.
+
+Example acceptable layout:
+
+```text
+data/raw/New Plant Diseases Dataset(Augmented)/New Plant Diseases Dataset(Augmented)/train/
+data/raw/New Plant Diseases Dataset(Augmented)/New Plant Diseases Dataset(Augmented)/valid/
+```
+
+The small Kaggle test or prediction folder is not used as the official test set.
+
+## Selected Classes
+
+The selected classes are listed in `src/config.py`:
+
+```text
+Corn_(maize)___Cercospora_leaf_spot Gray_leaf_spot
+Corn_(maize)___Common_rust_
+Corn_(maize)___Northern_Leaf_Blight
+Potato___Early_blight
+Potato___Late_blight
+Tomato___Bacterial_spot
+Tomato___Early_blight
+Tomato___Late_blight
+```
+
+If your downloaded dataset uses slightly different class names, edit `SELECTED_CLASSES` in `src/config.py`.
+
+## Installation
+https://vip-plant-disease-recognition.streamlit.app/
+Create a virtual environment:
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\activate
+```
+
+Install requirements:
+
+```powershell
+pip install -r requirements.txt
+```
+
+## GPU Training Note
+
+This project can run on Windows CPU, but training is faster with an NVIDIA GPU through WSL2 Ubuntu.
+
+On this laptop, native Windows TensorFlow can install successfully, but TensorFlow 2.11 and newer do not use CUDA directly on native Windows. For GPU training, open PowerShell as Administrator and enable WSL2:
+
+```powershell
+wsl --install
+```
+
+If Windows asks for a restart, restart the laptop. After Ubuntu is available, install the project requirements inside Ubuntu and verify GPU detection:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install --upgrade pip
+pip install -r requirements.txt
+python -c "import tensorflow as tf; print(tf.config.list_physical_devices('GPU'))"
+```
+
+If a GPU device is listed, use the same training commands below inside WSL2.
+
+For WSL2 GPU training, install the CUDA-enabled TensorFlow package inside WSL if needed:
+
+```bash
+pip install "tensorflow[and-cuda]>=2.16"
+```
+
+## Step-by-Step Workflow
+
+Run all commands from the project root folder:
+
+```text
+C:\Users\Acer\Documents\VIP
+```
+
+### 1. Extract selected classes from the dataset zip
+
+Option A: place `VIP_Dataset.zip` at the default local path:
+
+```text
+C:\Users\Acer\Downloads\VIP_Dataset.zip
+```
+
+Then run:
+
+```powershell
+python src/extract_selected_from_zip.py
+```
+
+Option B: give your own zip path:
+
+```powershell
+python src/extract_selected_from_zip.py --zip-path "D:\Datasets\VIP_Dataset.zip"
+```
+
+Option C: set an environment variable first:
+
+```powershell
+$env:VIP_DATASET_ZIP="D:\Datasets\VIP_Dataset.zip"
+python src/extract_selected_from_zip.py
+```
+
+This extracts only the selected tomato, potato and corn classes into:
+
+```text
+data/raw/train/
+data/raw/valid/
+```
+
+### 2. Audit the raw dataset
+
+```powershell
+python src/dataset_audit.py
+```
+
+This script:
+
+- lists available classes
+- counts images per class
+- detects unreadable image files
+- saves `outputs/reports/raw_class_distribution.csv`
+- saves `outputs/figures/raw_class_distribution.png`
+
+### 3. Select the project subset
+
+```powershell
+python src/select_subset.py
+```
+
+This copies only the selected tomato, potato and corn classes into:
+
+```text
+data/selected/train/
+data/selected/valid/
+```
+
+### 4. Prepare train, validation and test splits
+
+```powershell
+python src/prepare_splits.py
+```
+
+This script:
+
+- uses the selected Kaggle `train` folder as the training set
+- splits the selected Kaggle `valid` folder into validation and final test subsets
+- uses stratified sampling so every class is represented
+- saves the final dataset into `data/processed/`
+- saves `outputs/reports/processed_split_summary.csv`
+
+Final split layout:
+
+```text
+data/processed/train/
+data/processed/valid/
+data/processed/test/
+```
+
+### 5. Train the Simple CNN baseline
+
+```powershell
+python src/train_simple_cnn.py
+```
+
+This saves:
+
+```text
+outputs/models/simple_cnn.keras
+outputs/figures/simple_cnn_training_curves.png
+```
+
+For a short smoke test that does not produce the final model:
+
+```powershell
+python src/train_simple_cnn.py --quick-test
+```
+
+### 6. Train the MobileNetV2 transfer-learning model
+
+```powershell
+python src/train_mobilenetv2.py
+```
+
+This saves:
+
+```text
+outputs/models/mobilenetv2.keras
+outputs/figures/mobilenetv2_training_curves.png
+```
+
+For a short smoke test that does not produce the final model:
+
+```powershell
+python src/train_mobilenetv2.py --quick-test
+```
+
+Optional fine-tuning after the first MobileNetV2 model is working:
+
+```powershell
+python src/fine_tune_mobilenetv2.py
+```
+
+### 7. Evaluate both models
+
+```powershell
+python src/evaluate_models.py
+```
+
+This calculates:
+
+- accuracy
+- macro precision
+- macro recall
+- macro F1-score
+- weighted F1-score
+- confusion matrix
+- model size
+- average inference time per image
+
+Outputs are saved in:
+
+```text
+outputs/reports/
+outputs/figures/
+```
+
+### 8. Generate Grad-CAM examples
+
+```powershell
+python src/gradcam.py
+```
+
+This saves correct and incorrect prediction examples, where available, in:
+
+```text
+outputs/figures/gradcam_examples/
+```
+
+Each heatmap should be checked manually to explain whether the model focuses on visible leaf symptom regions or irrelevant background.
+
+### 9. Run the Streamlit application
+
+```powershell
+streamlit run app/streamlit-app.py
+```
+
+The app allows users to:
+
+- upload one leaf image
+- choose Simple CNN, MobileNetV2 or fine-tuned MobileNetV2, with the best evaluated model selected by default
+- optionally select a final test sample for demonstration and ground-truth checking
+- view the uploaded image
+- see the predicted class
+- see the confidence score
+- see the top three predictions
+- see inference time
+- view a Grad-CAM overlay
+
+Disclaimer shown in the app:
+
+```text
+This prototype is for educational and preliminary screening purposes only and does not replace expert agricultural diagnosis.
+```
+
+## Notes for Presentation
+
+- Simple CNN is the baseline model.
+- MobileNetV2 is the main model because it uses transfer learning.
+- EfficientNetB0 is optional and can be added later only after the first two models work.
+- Since the dataset is already augmented, the training scripts use only light online augmentation.
+- Validation and test sets are not manually augmented.
+
+## Current Final Results
+
+The completed run used 8 selected classes with 14,808 training images, 1,851 validation images and 1,851 final test images.
+
+| Model | Test Accuracy | Macro Precision | Macro Recall | Macro F1 | Weighted F1 | Model Size | Avg Inference Time |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| Simple CNN | 91.84% | 92.62% | 91.54% | 91.66% | 91.75% | 1.33 MB | 0.0049 s/image |
+| MobileNetV2 | 95.25% | 95.21% | 95.22% | 95.17% | 95.21% | 9.31 MB | 0.0222 s/image |
+| MobileNetV2 fine-tuned | 96.43% | 96.56% | 96.43% | 96.38% | 96.42% | 20.84 MB | 0.0222 s/image |
+
+The fine-tuned MobileNetV2 achieved the strongest final test performance and is selected by default in the Streamlit demo. The app also includes Simple CNN and MobileNetV2 so users can compare model predictions.
+
+Generated results are saved in:
+
+```text
+outputs/reports/
+outputs/figures/
+outputs/models/
+```

@@ -1,0 +1,25 @@
+class_name,split,image_count
+Corn_(maize)___Cercospora_leaf_spot Gray_leaf_spot,train,800
+Corn_(maize)___Cercospora_leaf_spot Gray_leaf_spot,val,100
+Corn_(maize)___Cercospora_leaf_spot Gray_leaf_spot,test,100
+Corn_(maize)___Common_rust_,train,953
+Corn_(maize)___Common_rust_,val,119
+Corn_(maize)___Common_rust_,test,120
+Corn_(maize)___Northern_Leaf_Blight,train,800
+Corn_(maize)___Northern_Leaf_Blight,val,100
+Corn_(maize)___Northern_Leaf_Blight,test,100
+Potato___Early_blight,train,800
+Potato___Early_blight,val,100
+Potato___Early_blight,test,100
+Potato___Late_blight,train,800
+Potato___Late_blight,val,100
+Potato___Late_blight,test,100
+Tomato___Bacterial_spot,train,1701
+Tomato___Bacterial_spot,val,212
+Tomato___Bacterial_spot,test,214
+Tomato___Early_blight,train,800
+Tomato___Early_blight,val,100
+Tomato___Early_blight,test,100
+Tomato___Late_blight,train,1527
+Tomato___Late_blight,val,190
+Tomato___Late_blight,test,192
